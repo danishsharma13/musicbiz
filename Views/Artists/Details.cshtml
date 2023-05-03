@@ -1,0 +1,182 @@
+﻿@model F2022A6DS.Models.ArtistWithMediaInfoViewModel
+
+@{
+    ViewBag.Title = "Artist Details";
+    var userAccount = new F2022A6DS.Controllers.RequestUser(User as System.Security.Claims.ClaimsPrincipal);
+    var photo_tf = false;
+    var audio_tf = false;
+    var application_tf = false;
+
+}
+
+<h2>Artist Details - @Model.Name</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal ">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(model => model.BirthName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BirthName)
+        </dd>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(model => model.BirthOrStartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BirthOrStartDate)
+        </dd>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(model => model.UrlArtist)
+        </dt>
+
+        <dd>
+            <img class="img-rounded" src="@Model.UrlArtist" alt="@Model.UrlArtist" width="200" />
+        </dd>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(model => model.Genre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Genre)
+        </dd>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(model => model.Executive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Executive)
+        </dd>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(model => model.Portrayal)
+        </dt>
+
+        <dd>
+            <div class="well">
+                @Html.Raw(@Model.Portrayal)
+            </div>
+        </dd>
+        <br />
+        <dt>
+            Photos
+        </dt>
+
+        <dd>
+            @if (Model.ArtistMediaItems.Count() == 0)
+            {
+                <span>(none)</span>
+            }
+            else
+            {
+                foreach (var item in Model.ArtistMediaItems.Where(m => m.ContentType.Contains("image/")))
+                {
+                    photo_tf = true;
+                    <div>
+                        <span>@item.Caption</span><br>
+                        <img src="~/mediaitem/@item.StringId" alt="@item.Caption" title="@item.Caption" width="200" />
+                    </div>
+                }
+
+                if(!photo_tf)
+                {
+                    <span>(none)</span>
+                }
+            }
+        </dd>
+        <br />
+        <dt>
+            Audio
+        </dt>
+
+        <dd>
+            @if (Model.ArtistMediaItems.Count() == 0)
+            {
+                <span>(none)</span>
+            }
+            else
+            {
+                foreach (var item in Model.ArtistMediaItems.Where(m => m.ContentType.Contains("audio/")))
+                {
+                    audio_tf = true;
+                    <div>
+                        <span>@item.Caption</span><br>
+                        <audio src="~/mediaitem/@item.StringId" controls="controls"></audio>
+                    </div>
+                }
+
+                if(!audio_tf)
+                {
+                    <span>(none)</span>
+                }
+            }
+        </dd>
+
+        <br />
+        <dt>
+            Documents
+        </dt>
+
+        <dd>
+            @if (Model.ArtistMediaItems.Count() == 0)
+            {
+                <span>(none)</span>
+            }
+            else
+            {
+                foreach (var item in Model.ArtistMediaItems.Where(m => m.ContentType.Contains("application/")))
+                {
+                    application_tf = true;
+                    <div>
+                        <span>@item.Caption</span><br>
+                        <a href="~/mediaitem/@item.StringId/download">
+                            @if (item.ContentType.Contains("pdf"))
+                            {
+                                <img src="~/Asset/Icons/icon-pdf.png" alt="pdf" />
+                            }
+                            else if(item.ContentType.Contains("ms-excel"))
+                            {
+                                <img src="~/Asset/Icons/icon-excel.png" alt="excel" />
+                            }
+                            else if(item.ContentType.Contains("word"))
+                            {
+                                <img src="~/Asset/Icons/icon-word.png" alt="word" />
+                            }
+                        
+                        </a>
+                    </div>
+                }
+
+                if(!application_tf)
+                {
+                    <span>(none)</span>
+                }
+            }
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+
+    @if (userAccount.HasRoleClaim("Coordinator"))
+    {
+        @Html.Raw(" | ");
+        @Html.ActionLink("Add an Album", "AddAlbum");
+        @Html.Raw(" | ");
+        @Html.ActionLink("Add a MediaItem", "AddMediaItem");
+    }
+</p>

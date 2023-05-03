@@ -1,0 +1,67 @@
+﻿@model IEnumerable<F2022A6DS.Models.ArtistBaseViewModel>
+
+@{
+    ViewBag.Title = "Artists";
+    var userAccount = new F2022A6DS.Controllers.RequestUser(User as System.Security.Claims.ClaimsPrincipal);
+}
+
+<h2>All Artists</h2>
+
+@if (userAccount.HasRoleClaim("Executive"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UrlArtist)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BirthName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BirthOrStartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Genre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Executive)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            <img class="img-rounded" src="@item.UrlArtist" alt="@item.UrlArtist" width="200" />
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BirthName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BirthOrStartDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Genre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Executive)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { id = item.Id })
+        </td>
+    </tr>
+    }
+
+</table>

@@ -1,0 +1,73 @@
+﻿@model F2022A6DS.Models.AlbumWithDetailsViewModel
+
+@{
+    ViewBag.Title = "Album Details";
+    var userAccount = new F2022A6DS.Controllers.RequestUser(User as System.Security.Claims.ClaimsPrincipal);
+}
+
+<h2>Details - @Model.Name</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(model => model.ReleaseDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReleaseDate)
+        </dd>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(model => model.UrlAlbum)
+        </dt>
+
+        <dd>
+            <img class="img-rounded" src="@Model.UrlAlbum" alt="@Model.UrlAlbum" width="200" />
+        </dd>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(model => model.Genre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Genre)
+        </dd>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(model => model.Coordinator)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Coordinator)
+        </dd>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(model => model.Background)
+        </dt>
+
+        <dd>
+            <div class="well">
+                @Html.Raw(@Model.Background)
+            </div>
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+
+    @if (userAccount.HasRoleClaim("Clerk"))
+    {
+        @Html.Raw(" | ");
+        @Html.ActionLink("Add Track to the Album", "AddTrack");
+    }
+</p>

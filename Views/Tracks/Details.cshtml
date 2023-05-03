@@ -1,0 +1,40 @@
+﻿@model F2022A6DS.Models.TrackWithDetailsViewModel
+
+@{
+    ViewBag.Title = "Track Details";
+    var userAccount = new F2022A6DS.Controllers.RequestUser(User as System.Security.Claims.ClaimsPrincipal);
+}
+
+<h2>Details for track - @Model.Name</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <br />
+        <dt>
+            Sample Clip
+        </dt>
+
+        <dd>
+            <audio src="/clip/@Model.Id" controls="controls"></audio>
+        </dd>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(model => model.Composers)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Composers)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
